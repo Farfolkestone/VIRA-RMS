@@ -1,0 +1,1285 @@
+# VIGIE RMS — UNIFIED HOTEL INTELLIGENCE & REVENUE MANAGEMENT
+## GRAND CHALLENGE UX/UI — Interface unifiée VIGIE PLUS + VARA PLUS + RMS + COPILOT
+
+**Mission : concevoir le futur centre de pilotage intelligent d'un hôtel, à partir de deux applications métier existantes.**
+
+**Livrable : prototype HTML/CSS/JavaScript autonome, interactif et visuellement abouti.**
+
+---
+
+# 1. TON RÔLE ET TA MISSION
+
+Tu es simultanément :
+
+- Un Principal Product Designer spécialisé dans les applications professionnelles complexes.
+- Un expert des interfaces de Revenue Management hôtelier.
+- Un architecte frontend senior.
+- Un spécialiste des tableaux de données, plannings et outils de supervision.
+- Un concepteur d'interfaces Copilot pour l'aide à la décision.
+- Un expert en ergonomie des outils utilisés quotidiennement sur ordinateur.
+
+Tu participes à un concours entre plusieurs agents de conception.
+
+Nous allons comparer leurs propositions avant de choisir les meilleures idées pour notre future application.
+
+**Tu ne dois pas développer un véritable RMS ni connecter les systèmes hôteliers. Tu dois concevoir et réaliser son interface cible, de manière suffisamment convaincante pour guider ensuite notre équipe de développement.**
+
+Tu bénéficies d'une grande liberté visuelle.
+
+Nous ne souhaitons pas imposer la disposition des menus, les couleurs, la navigation ou le découpage exact des écrans.
+
+En revanche, les données métier, les responsabilités des applications et les règles de sécurité fonctionnelle doivent être respectées.
+
+Notre objectif est de créer :
+
+**Une seule interface permettant de consulter, comprendre, comparer, surveiller et, à terme, piloter les disponibilités, les tarifs et les décisions commerciales d'un hôtel.**
+
+---
+
+# 2. LES TROIS COMPOSANTES DE LA FUTURE PLATEFORME
+
+Nous disposons de deux applications métier déjà développées, ainsi que d'un troisième moteur à concevoir.
+
+## 2.1 VIGIE PLUS — PMS / TOPSYS
+
+VIGIE PLUS exploite les données de notre PMS TOPSYS.
+
+Elle sert notamment à connaître :
+
+- Le parc physique de chambres.
+- Les chambres occupées.
+- Les chambres disponibles.
+- Les réservations du PMS.
+- Les chambres attribuées.
+- Les arrivées.
+- Les départs.
+- L'occupation par catégorie.
+- Les chambres disponibles par date.
+- Les réservations fictives.
+- Les écarts entre l'occupation théorique et les chambres réellement attribuées.
+- Les contraintes de disponibilité.
+- Les possibilités de substitution ou de surclassement.
+- Le stock physique susceptible d'être commercialisé.
+
+Des mécanismes avancés de récupération des données TOPSYS ont été développés dans VIGIE PLUS.
+
+Le prototype doit représenter ces données comme provenant d'une source opérationnelle identifiable.
+
+Il ne doit pas supposer que chaque donnée PMS est toujours disponible, fraîche ou complète.
+
+## 2.2 VARA PLUS — CHANNEL MANAGER D-EDGE
+
+VARA PLUS exploite les observations provenant de D-Edge.
+
+La version technique de référence est VARA PLUS v0.3.50, datée du 2 novembre 2026.
+
+Elle comprend notamment :
+
+- Collecte des réservations D-Edge.
+- Recherche et inspection des réservations.
+- Collecte des stocks commerciaux.
+- Collecte des prix.
+- Identification des produits et des plans tarifaires.
+- Observation des tarifs ouverts, fermés ou indisponibles.
+- Collectes ciblées sur une période allant jusqu'à 93 jours.
+- Historique SQLite.
+- Détection de premières observations et de changements.
+- Référence tarifaire RACK RO FLEX.
+- Moteur de calcul tarifaire à partir de règles.
+- Vérification des écarts entre prix observés et prix calculés.
+- Historique et provenance.
+- Diagnostics et performances.
+- Ordonnanceur de collectes.
+- Préparation de données vers VIGIE PLUS.
+
+Certaines capacités sont implémentées mais encore en qualification opérationnelle.
+
+Notamment, la collecte automatique, les statuts ambigus et le contrat de partage ne doivent pas être représentés comme entièrement validés.
+
+## 2.3 RMS — REVENUE MANAGEMENT SYSTEM
+
+Le nouveau moteur RMS doit pouvoir :
+
+1. Rapprocher les données TOPSYS et D-Edge.
+2. Calculer des écarts de disponibilité.
+3. Détecter les risques de surbooking.
+4. Identifier les chambres disponibles non mises en vente.
+5. Analyser le Pick-up.
+6. Contrôler les tarifs commerciaux.
+7. Détecter les incohérences de plans tarifaires.
+8. Appliquer des règles commerciales configurables.
+9. Préparer des recommandations.
+10. Gérer des alertes.
+11. Simuler des décisions.
+12. Préparer de futures mises à jour D-Edge.
+13. Fournir un Copilot capable d'expliquer la situation de l'hôtel.
+
+**Le RMS est notre objectif futur. Les fonctions décisionnelles ne doivent pas être confondues avec les collectes déjà développées.**
+
+---
+
+# 3. PRINCIPE FONDAMENTAL : UNE SEULE INTERFACE, PLUSIEURS MOTEURS
+
+L'utilisateur final ne doit pas avoir besoin d'ouvrir VIGIE PLUS, VARA PLUS et le RMS dans trois fenêtres indépendantes pour prendre ses décisions.
+
+Il doit disposer d'une interface commune.
+
+Mais derrière cette interface :
+
+- VIGIE PLUS reste responsable des observations TOPSYS.
+- VARA PLUS reste responsable des observations D-Edge.
+- Le RMS réalise les rapprochements et calculs métier.
+- Le Copilot présente et explique les résultats.
+- Un futur moteur d'exécution, distinct, pourra appliquer certaines décisions autorisées.
+
+Ne propose pas une architecture qui oblige à fusionner directement les bases SQLite ou à mélanger les collecteurs.
+
+Les données doivent pouvoir être échangées par des API locales versionnées.
+
+Pour le prototype, toutes ces sources seront simulées.
+
+---
+
+# 4. STACK TECHNIQUE À RESPECTER
+
+Notre environnement réel utilise principalement :
+
+- Windows 11.
+- Python.
+- SQLite.
+- API HTTP locales.
+- HTML.
+- CSS.
+- JavaScript natif.
+- Modules ES JavaScript.
+- Extension Chrome pour D-Edge.
+- Collecteurs locaux TOPSYS.
+
+Tu dois livrer un fichier HTML autonome fonctionnant sans installation.
+
+### Contraintes impératives
+
+- Pas de React obligatoire.
+- Pas de Vue obligatoire.
+- Pas de Next.js.
+- Pas de Vite.
+- Pas de Tailwind CDN.
+- Pas de dépendance réseau.
+- Pas de police distante.
+- Pas de compilation.
+- Pas de serveur indispensable pour ouvrir la maquette.
+- Pas de connexion réelle aux systèmes.
+- Pas de données personnelles réelles.
+- Pas d'écriture réelle sur D-Edge ou TOPSYS.
+
+Un seul fichier `index.html` doit suffire.
+
+Tu peux utiliser SVG et Canvas pour les graphiques.
+
+Tu dois organiser ton code pour préparer une future migration vers des modules JavaScript réutilisables.
+
+### Qualité du code
+
+- État centralisé et compréhensible.
+- Fonctions d'affichage distinctes des données.
+- Données simulées isolées.
+- Gestionnaires d'événements robustes.
+- Textes dynamiques correctement échappés.
+- Aucun usage dangereux d'évaluation de code.
+- Interface fluide.
+- Pas de boutons décoratifs présentés comme fonctionnels.
+
+---
+
+# 5. CONTEXTE DE L'HÔTEL
+
+Le prototype doit représenter un hôtel parisien de 45 chambres physiques.
+
+## Inventaire TOPSYS
+
+| Catégorie | Code | Nombre |
+|---|---|---:|
+| Double Classique | DCLA | 13 |
+| Double Deluxe | DDLX | 5 |
+| Twin Classique | TCLA | 8 |
+| Twin Deluxe | TDLX | 2 |
+| Terrasse Classique | TRCL | 2 |
+| Terrasse Deluxe | TRDL | 1 |
+| Double Adjacentes | DCAD | 14 |
+| **Total** | | **45** |
+
+### Règles particulières
+
+Une réservation DCAD peut consommer deux chambres physiques.
+
+Certaines catégories peuvent faire l'objet de substitutions ou de surclassements.
+
+Les réservations fictives ne doivent pas être considérées comme des occupations physiques réelles lorsqu'elles sont identifiées comme telles.
+
+Les stocks commerciaux D-Edge peuvent partager un même inventaire physique.
+
+Des produits Single Use peuvent être dérivés de catégories existantes.
+
+**Il est interdit d'additionner naïvement les disponibilités des produits D-Edge pour calculer le nombre de chambres physiques disponibles.**
+
+Le RMS doit s'appuyer sur un moteur de correspondances et de règles validées.
+
+Lorsque la correspondance n'est pas fiable, il doit signaler une comparaison non concluante.
+
+---
+
+# 6. PÉRIMÈTRE TEMPOREL
+
+L'application doit pouvoir afficher jusqu'à 93 jours de données.
+
+Exemples de périodes :
+
+- Aujourd'hui.
+- Demain.
+- Sept prochains jours.
+- Quatorze prochains jours.
+- Trente et un prochains jours.
+- Quatre-vingt-treize prochains jours.
+- Période personnalisée.
+
+Le planning doit offrir :
+
+- Navigation par date.
+- Défilement horizontal.
+- En-têtes fixes.
+- Catégories fixes.
+- Filtrage.
+- Agrégation contrôlée.
+- Accès au détail d'une cellule.
+
+Les périodes doivent être partagées intelligemment entre les vues, sans écraser automatiquement les filtres spécifiques d'un écran.
+
+---
+
+# 7. VISION GLOBALE DE L'INTERFACE
+
+Je souhaite que tu imagines un **poste de travail hôtelier de nouvelle génération**.
+
+Il ne doit pas ressembler à un dashboard SaaS générique rempli de grandes cartes colorées.
+
+L'utilisateur est un Revenue Manager ou un directeur d'hôtel.
+
+Il travaille principalement avec :
+
+- Des dates.
+- Des catégories de chambres.
+- Des disponibilités.
+- Des tarifs.
+- Des plans commerciaux.
+- Des réservations.
+- Des historiques.
+- Des anomalies.
+- Des recommandations.
+
+L'interface doit lui permettre de détecter rapidement ce qui nécessite une intervention.
+
+Tu peux concevoir :
+
+- Un tableau de bord.
+- Une barre latérale.
+- Une navigation par onglets persistants.
+- Des panneaux de détail.
+- Un inspecteur contextuel.
+- Un centre de recherche.
+- Un planning principal.
+- Des vues comparatives.
+- Un assistant conversationnel.
+
+La créativité est encouragée.
+
+Mais chaque élément doit être justifié par un usage réel.
+
+---
+
+# 8. MODULE PRIORITAIRE : COCKPIT UNIFIÉ
+
+Le cockpit constitue l'entrée principale.
+
+Il doit répondre immédiatement aux questions suivantes :
+
+1. Quelle est l'occupation réelle de l'hôtel ?
+2. Combien de chambres sont réellement disponibles ?
+3. Combien de chambres sont commercialisées sur D-Edge ?
+4. Existe-t-il un risque de surbooking ?
+5. Existe-t-il une sous-commercialisation ?
+6. Quels tarifs ont changé ?
+7. Quels plans ont été ouverts ou fermés ?
+8. Quelles réservations ont été ajoutées, modifiées ou annulées ?
+9. Quelles alertes nécessitent une décision ?
+10. Les données sont-elles suffisamment fraîches et complètes ?
+
+### Indicateurs possibles
+
+- Occupation PMS.
+- Chambres physiques libres.
+- Stock commercial D-Edge.
+- Risques détectés.
+- Opportunités de vente.
+- Pick-up observé.
+- ADR.
+- Chiffre d'affaires observé, seulement si les données le permettent.
+- Variation du RACK RO FLEX.
+- Plans tarifaires fermés.
+- Plans tarifaires indisponibles.
+- Dernière collecte PMS.
+- Dernière collecte D-Edge.
+- Alertes prioritaires.
+
+### Exigence majeure
+
+Chaque indicateur doit être cliquable et conduire au détail qui justifie son calcul.
+
+Les données PMS et D-Edge ne doivent jamais être présentées comme une observation unique si leurs horodatages diffèrent.
+
+---
+
+# 9. MODULE CENTRAL : PLANNING UNIFIÉ
+
+**C'est probablement l'écran le plus important de toute l'application.**
+
+Il doit permettre de comparer les données PMS et Channel Manager pour chaque date.
+
+Imagine une interface dans laquelle l'utilisateur peut examiner la situation complète d'une date de séjour sans changer constamment d'application.
+
+### Données souhaitées par date
+
+#### TOPSYS
+
+- Occupation réelle.
+- Chambres libres.
+- Occupation par catégorie.
+- Chambres attribuées.
+- Réservations fictives.
+- Contraintes de substitution.
+- Stock physique admissible.
+
+#### D-EDGE
+
+- Stock commercial publié.
+- Prix de référence.
+- Plans tarifaires.
+- Plans ouverts.
+- Plans fermés.
+- Plans indisponibles.
+- Réservations observées.
+- Derniers changements.
+
+#### RMS
+
+- Écart de stock qualifié.
+- Risque de surbooking.
+- Stock disponible non commercialisé.
+- Conformité des stratégies.
+- Recommandation.
+- Niveau de confiance.
+- Statut des données.
+
+### Modes de lecture proposés
+
+Tu peux inventer une meilleure organisation, mais il serait utile de pouvoir basculer entre :
+
+**Mode Disponibilités**
+
+Comparaison des stocks TOPSYS et D-Edge.
+
+**Mode Tarifs**
+
+Prix RACK RO FLEX, prix dérivés et écarts.
+
+**Mode Commercial**
+
+Plans ouverts/fermés, familles tarifaires et recommandations.
+
+**Mode Alertes**
+
+Dates et catégories présentant des anomalies.
+
+### Inspection des cellules
+
+Un clic sur une cellule doit ouvrir un panneau détaillé contenant :
+
+- Date.
+- Catégorie.
+- Stock physique.
+- Stock commercial.
+- Source PMS.
+- Source D-Edge.
+- Horodatages.
+- Correspondances utilisées.
+- Règles appliquées.
+- Avertissements.
+- Historique pertinent.
+- Recommandations éventuelles.
+
+---
+
+# 10. MODULE RÉSERVATIONS ET PICK-UP
+
+Créer une interface regroupant les observations de réservations TOPSYS et D-Edge.
+
+### Fonctions souhaitées
+
+- Recherche.
+- Filtres.
+- Arrivées.
+- Départs.
+- Réservations nouvelles observées.
+- Modifications.
+- Annulations explicites.
+- Réservations non attribuées.
+- Catégories.
+- Canaux.
+- Plans tarifaires.
+- Historique.
+- Pick-up.
+
+### Point critique
+
+Une réservation D-Edge et une réservation PMS ne doivent pas être automatiquement considérées comme identiques simplement parce que le nom du client et les dates correspondent.
+
+Il faut distinguer :
+
+- Rapprochement confirmé.
+- Rapprochement probable à vérifier.
+- Rapprochement impossible.
+- Donnée manquante.
+
+### Pick-up
+
+Prévoir une analyse par :
+
+- Date de séjour.
+- Date de réservation.
+- Catégorie.
+- Canal.
+- Tarif.
+- Nuitées.
+- Quantité.
+- Valeur, si disponible.
+
+Le calcul doit utiliser des observations comparables.
+
+Une réservation absente d'une collecte partielle ne doit pas être considérée comme annulée.
+
+Les totaux fictifs présentés dans la maquette doivent correspondre aux réservations simulées.
+
+---
+
+# 11. MODULE TARIFS & PLANS COMMERCIAUX
+
+VARA PLUS collecte déjà une grande quantité d'informations tarifaires.
+
+L'interface doit pouvoir accueillir plusieurs centaines de plans.
+
+### Tarif de référence
+
+Produit D-Edge :
+
+**Double Classique — ID 5146**
+
+Plan :
+
+**RACK RO FLEX — ID 4685**
+
+C'est la référence centrale de notre vérification tarifaire.
+
+### Fonctions attendues
+
+- Consulter le RACK RO FLEX par date de séjour.
+- Observer son évolution.
+- Comparer deux collectes.
+- Rechercher un plan.
+- Afficher le prix D-Edge.
+- Afficher le prix calculé selon une règle validée.
+- Afficher le delta.
+- Voir la version de la règle.
+- Afficher la date de l'observation.
+- Distinguer les prix récemment relus des valeurs plus anciennes.
+- Signaler les écarts nécessitant une vérification.
+
+### Familles commerciales
+
+Exemples :
+
+- RACK.
+- OTA.
+- MOBILE.
+- BEST RATE.
+- VIP.
+- PROMO.
+- EXP.
+- Autres.
+
+Les familles et leurs règles doivent être configurables.
+
+**Ignorer TRAVCO dans la surveillance et le calcul commercial courants**, tout en préservant les données historiques lorsqu'elles existent.
+
+### Attention aux prix
+
+Ne pas modifier les centimes d'origine.
+
+Ne pas imposer un arrondi universel.
+
+Les calculs doivent rester explicables.
+
+Un prix calculé n'est pas un prix observé.
+
+Un prix existant ne signifie pas nécessairement que le plan est ouvert.
+
+---
+
+# 12. MODULE OUVERTURES & FERMETURES
+
+Créer un véritable centre de consultation des statuts tarifaires.
+
+Distinguer :
+
+- Tarif ouvert.
+- Tarif fermé.
+- Vente fermée.
+- Vente fermée pour la période.
+- Stock épuisé.
+- Indisponible.
+- Sur demande.
+- État inconnu.
+- État non observé.
+
+### Recherche avancée
+
+L'utilisateur choisit :
+
+- Une catégorie.
+- Un produit.
+- Une famille tarifaire.
+- Un plan.
+- Une période.
+- Un statut.
+
+Puis l'un des modes :
+
+**Au moins un jour**
+
+Le statut est présent au moins une fois dans la période.
+
+**Tous les jours**
+
+Le statut est observé pour chaque date de la période.
+
+**Changement**
+
+Le statut a changé entre deux collectes comparables.
+
+Les jours sans observation ne sont pas considérés conformes.
+
+### Interface attendue
+
+Une matrice de statuts par plan et par date serait particulièrement utile.
+
+Chaque état doit posséder une représentation visuelle claire et une explication.
+
+L'utilisateur doit pouvoir distinguer un état prouvé d'un état indéterminé.
+
+---
+
+# 13. MODULE ALERTES RMS
+
+Créer un centre d'alertes intelligent.
+
+Les alertes doivent être déclenchées par des règles métier et non par de simples couleurs de cellules.
+
+### Alertes de disponibilité
+
+- Stock commercial supérieur au stock autorisé.
+- Risque de surbooking.
+- Chambres physiques libres non commercialisées.
+- Incohérence de catégorie.
+- Produit sans correspondance fiable.
+- Réserve commerciale dépassée.
+
+### Alertes tarifaires
+
+- Prix observé différent du prix calculé.
+- Tarif de référence inhabituel selon une règle configurée.
+- Plan promotionnel ouvert alors que la stratégie exige une fermeture.
+- Plan fermé alors que la stratégie recommande son ouverture.
+- Incohérence entre plans.
+- Valeur tarifaire périmée.
+- Tarif indéterminé.
+
+### Alertes de données
+
+- Collecte échouée.
+- Collecte partielle.
+- Session expirée.
+- Source non fraîche.
+- Rapport manquant.
+- État non qualifié.
+- Correspondance PMS/D-Edge incertaine.
+
+### Pour chaque alerte
+
+Afficher :
+
+- Type.
+- Priorité.
+- Date de séjour concernée.
+- Catégorie ou plan.
+- Condition déclenchante.
+- Observations utilisées.
+- Fiabilité.
+- Recommandation.
+- État de traitement.
+- Lien vers le détail.
+
+L'utilisateur doit pouvoir filtrer et retrouver les alertes.
+
+Le prototype peut simuler leur acquittement local, sans prétendre résoudre le problème dans D-Edge.
+
+---
+
+# 14. MODULE STRATÉGIES RMS
+
+Créer une interface permettant de définir des stratégies commerciales.
+
+Nous voulons à terme que le RMS analyse l'occupation, le Pick-up et les tarifs avant de proposer des décisions.
+
+### Paramètres configurables
+
+- Horizon en jours.
+- Stock physique libre.
+- Seuil d'occupation.
+- Pick-up.
+- Jour de semaine.
+- Saison.
+- Périodes événementielles.
+- Catégories.
+- Plans concernés.
+- Priorités des règles.
+- Exceptions.
+- Réserve commerciale.
+- Limites de variation tarifaire.
+
+### Exemple de règle
+
+À J-10, si le nombre de chambres réellement libres dépasse 25 :
+
+- Proposer d'ouvrir MOBILES.
+- Proposer d'ouvrir BEST RATE.
+- Proposer de fermer VIP.
+
+Si le stock est inférieur à 25 :
+
+- Proposer de fermer MOBILES.
+- Proposer de fermer BEST RATE.
+- Proposer d'ouvrir VIP.
+
+À égalité : comportement configurable.
+
+**Ces valeurs sont de simples exemples, pas des règles figées dans le logiciel.**
+
+### Interface souhaitée
+
+- Liste des stratégies.
+- Éditeur visuel de règles.
+- Conditions.
+- Actions recommandées.
+- Priorités.
+- Exceptions.
+- Simulation sur une période.
+- Résultats par date.
+- Justification.
+- Historique des modifications de règle.
+
+Tu dois concevoir une interface compréhensible par un directeur d'hôtel sans connaissance en programmation.
+
+### Important
+
+Un moteur de simulation de la maquette ne doit pas être présenté comme un RMS validé en production.
+
+---
+
+# 15. CENTRE DES ACTIONS ET AUTOMATISATION
+
+Nous souhaitons préparer de futures mises à jour automatisées de D-Edge.
+
+L'interface doit distinguer clairement quatre états :
+
+1. Observation.
+2. Recommandation.
+3. Action préparée.
+4. Action exécutée et vérifiée.
+
+### Processus futur
+
+Une recommandation peut devenir une action préparée.
+
+Exemple :
+
+« Réduire le stock commercial Double Classique de 7 à 4 pour une date donnée ».
+
+L'utilisateur doit pouvoir consulter :
+
+- Valeur observée.
+- Valeur souhaitée.
+- Écart.
+- Règle justificative.
+- Sources.
+- Fraîcheur.
+- Risques.
+- Plan concerné.
+- Niveau d'autorisation.
+- Statut de validation.
+
+### Simulation des actions
+
+Dans ton prototype, tu peux créer un mode **Simulation uniquement**.
+
+L'utilisateur peut accepter ou rejeter une proposition.
+
+Mais aucune écriture réelle ne doit être effectuée.
+
+### Sécurité future
+
+Prévoir visuellement :
+
+- Validation humaine.
+- Vérification de la dernière valeur connue.
+- Verrouillage des actions contradictoires.
+- Journal d'audit.
+- Résultat de l'exécution.
+- Relecture après modification.
+- Erreurs partielles.
+- Suspension automatique si les données sont périmées.
+- Possibilité d'arrêter l'automatisation.
+
+Ne jamais suggérer qu'une opération a été appliquée dans D-Edge alors que le prototype ne fait que la simuler.
+
+---
+
+# 16. MODULE COPILOT HÔTELIER
+
+Créer une interface conversationnelle intelligente.
+
+Elle doit permettre à l'utilisateur de poser des questions naturelles aux données PMS, Channel Manager et RMS.
+
+### Questions à prendre en charge dans la démonstration
+
+1. « Quelles dates présentent un risque de surbooking ? »
+2. « Quelles chambres sont libres dans TOPSYS mais non disponibles à la vente ? »
+3. « Quels plans VIP sont encore ouverts alors que notre stratégie demande leur fermeture ? »
+4. « Quels tarifs présentent un écart supérieur à 1 € ? »
+5. « Quelle est l'évolution du RACK RO FLEX ? »
+6. « Quelles réservations ont été annulées depuis la dernière collecte complète ? »
+7. « Quelles dates des 30 prochains jours ont un faible taux d'occupation ? »
+8. « Quelles actions me recommandes-tu pour demain ? »
+9. « Pourquoi cette alerte de disponibilité a-t-elle été déclenchée ? »
+10. « Prépare les changements recommandés, sans les appliquer. »
+
+### Fonctionnement exigé
+
+Le Copilot du prototype doit être entièrement local et simulé.
+
+Il n'est pas nécessaire de développer un modèle d'IA.
+
+Tu peux utiliser un routeur de questions déterministe.
+
+Cependant, les réponses doivent être calculées à partir des données de démonstration, pas simplement être des textes fixes sans rapport avec les tableaux.
+
+### Réponse du Copilot
+
+Une bonne réponse contient :
+
+- Une synthèse.
+- Les données pertinentes.
+- La période.
+- Les sources.
+- Le niveau de confiance.
+- Les limites.
+- Un tableau ou graphique si utile.
+- Un bouton pour ouvrir les observations concernées.
+- Une recommandation éventuelle.
+
+### Exemple de comportement
+
+Question :
+
+« Pourquoi le 12 novembre présente-t-il un risque de surbooking ? »
+
+Réponse souhaitée :
+
+- Disponibilité physique TOPSYS.
+- Stock commercial observé D-Edge.
+- Correspondances utilisées.
+- Écart.
+- Données manquantes éventuelles.
+- Règle de détection.
+- Action recommandée.
+
+Ne donne pas de réponse catégorique si une source est incomplète.
+
+---
+
+# 17. HISTORIQUE, PROVENANCE ET QUALITÉ DES DONNÉES
+
+C'est une exigence fondamentale.
+
+Les deux applications utilisent des observations qui peuvent avoir des horodatages différents.
+
+Le RMS doit conserver :
+
+- Application source.
+- Hôtel.
+- Identifiant de collecte.
+- Identifiant stable de l'objet.
+- Date de séjour.
+- Date d'événement source, lorsqu'elle est connue.
+- Date de détection.
+- Date d'ingestion.
+- Couverture.
+- Fraîcheur.
+- Statut de qualification.
+- Version des règles.
+- Provenance des calculs.
+
+### Trois états de données
+
+**Observé**
+
+Une donnée effectivement extraite d'une source.
+
+**Calculé**
+
+Une valeur dérivée d'observations et de règles explicites.
+
+**Recommandé**
+
+Une décision proposée par le RMS.
+
+Ces trois statuts doivent être visuellement identifiables.
+
+### Cas des données manquantes
+
+Une absence de donnée ne doit pas être convertie automatiquement en zéro.
+
+Une absence de prix ne signifie pas une fermeture.
+
+Une disparition de réservation dans une collecte partielle ne signifie pas une annulation.
+
+Un stock commercial différent du stock physique ne signifie pas nécessairement une anomalie tant que les correspondances ne sont pas qualifiées.
+
+---
+
+# 18. CONCEPTION DE L'EXPÉRIENCE UTILISATEUR
+
+L'interface doit être agréable à utiliser pendant une journée de travail complète.
+
+### Exigences UX
+
+- Navigation rapide.
+- Filtres persistants.
+- Onglets de travail si pertinents.
+- Recherche contextuelle.
+- Détails sans perdre le tableau.
+- Panneaux redimensionnables si utiles.
+- En-têtes fixes.
+- Première colonne fixe.
+- Tri.
+- Pagination.
+- Défilement horizontal maîtrisé.
+- États vides.
+- États de chargement simulés.
+- Notifications.
+- Préférences de densité.
+- Raccourcis clavier lorsque pertinents.
+
+### Fenêtres et panneaux
+
+Évite de multiplier les fenêtres modales.
+
+Privilégie une inspection contextuelle des informations.
+
+L'utilisateur doit toujours savoir :
+
+- Où il se trouve.
+- Quelle période il consulte.
+- Quel hôtel il analyse.
+- Quelle source alimente la vue.
+- Quelle collecte est utilisée.
+- Si la recommandation est seulement simulée.
+
+---
+
+# 19. DESIGN VISUEL : LIBERTÉ CRÉATIVE
+
+Tu peux choisir :
+
+- Interface claire.
+- Interface sombre.
+- Thème hybride.
+- Navigation latérale.
+- Navigation horizontale.
+- Poste de travail analytique.
+- Dashboard moderne.
+- Présentation inspirée des plateformes financières.
+- Conception originale.
+
+Tu n'es pas obligé de suivre nos prototypes précédents.
+
+Cependant, voici quelques principes qui nous intéressent :
+
+- Forte lisibilité.
+- Densité adaptée.
+- Peu d'espace perdu.
+- Couleurs utilisées pour transmettre une information.
+- Graphiques pertinents.
+- Tableaux professionnels.
+- Design cohérent entre les modules.
+- Identité graphique distinctive.
+- Ergonomie adaptée à Windows.
+
+Évite les interfaces spectaculaires mais inutilisables.
+
+Évite les cartes trop grandes et les milliers de chiffres sans hiérarchie.
+
+Le design doit mettre en valeur les décisions opérationnelles.
+
+---
+
+# 20. DONNÉES DE DÉMONSTRATION
+
+Tu dois construire un jeu de données fictives cohérent.
+
+### Hôtel
+
+45 chambres réparties selon les sept catégories indiquées.
+
+### Période
+
+93 dates de séjour.
+
+### TOPSYS
+
+Simuler :
+
+- Occupation quotidienne.
+- Chambres libres.
+- Disponibilités par catégorie.
+- Réservations.
+- Arrivées.
+- Départs.
+- Réservations fictives.
+- Quelques cas de substitution.
+
+### D-EDGE
+
+Simuler :
+
+- Huit produits commerciaux.
+- Stocks publiés.
+- Plans tarifaires.
+- Prix.
+- Statuts.
+- Réservations observées.
+- Plusieurs collectes.
+
+### RMS
+
+Générer les résultats des rapprochements à partir des données précédentes.
+
+### Cas de démonstration indispensables
+
+Prévoir volontairement :
+
+1. Une date sans anomalie.
+2. Un risque de surbooking démontrable.
+3. Une sous-commercialisation.
+4. Un tarif fermé.
+5. Un stock commercial nul.
+6. Un statut tarifaire inconnu.
+7. Une collecte D-Edge partielle.
+8. Une observation TOPSYS périmée.
+9. Une incohérence tarifaire.
+10. Une opportunité de promotion.
+11. Une première observation sans historique antérieur.
+12. Un véritable changement entre deux observations.
+13. Une réservation annulée explicitement.
+14. Une correspondance PMS/D-Edge non qualifiée.
+15. Une recommandation bloquée pour cause de données insuffisantes.
+
+Tous les chiffres des écrans doivent être cohérents avec ces données.
+
+---
+
+# 21. PARCOURS INTERACTIFS À RÉALISER
+
+Je ne veux pas uniquement visiter des pages.
+
+Je veux pouvoir travailler avec la maquette.
+
+### Parcours A — Risque de surbooking
+
+Ouvrir le cockpit.
+
+Cliquer sur une alerte.
+
+Afficher la date concernée.
+
+Ouvrir la catégorie.
+
+Comparer les données PMS et D-Edge.
+
+Afficher la justification.
+
+Préparer une correction simulée.
+
+### Parcours B — Stratégie commerciale
+
+Ouvrir les stratégies.
+
+Modifier un seuil de disponibilité.
+
+Modifier l'horizon.
+
+Exécuter une simulation locale.
+
+Afficher les dates concernées.
+
+Examiner les recommandations.
+
+### Parcours C — Vérification tarifaire
+
+Ouvrir RACK RO FLEX.
+
+Choisir une date.
+
+Afficher les tarifs dérivés.
+
+Comparer valeurs observées et calculées.
+
+Examiner un écart.
+
+Afficher la règle utilisée.
+
+### Parcours D — Plans fermés
+
+Choisir une période.
+
+Rechercher les BEST RATE fermés.
+
+Basculer entre « au moins un jour » et « tous les jours ».
+
+Ouvrir un plan.
+
+Afficher les dates exactes.
+
+### Parcours E — Copilot
+
+Poser une question prédéfinie sur le stock.
+
+Afficher la réponse.
+
+Ouvrir les sources.
+
+Naviguer vers la date concernée.
+
+Revenir à la conversation.
+
+### Parcours F — Données périmées
+
+Ouvrir un cas où la dernière collecte TOPSYS est trop ancienne.
+
+Constater que le RMS ne formule pas une recommandation définitive.
+
+Afficher la raison du blocage.
+
+### Parcours G — Actions simulées
+
+Ouvrir le centre d'actions.
+
+Examiner une recommandation.
+
+Afficher l'avant/après.
+
+Valider une action en mode simulation.
+
+Constater qu'aucune modification réelle n'est effectuée.
+
+### Parcours H — Planning 93 jours
+
+Naviguer entre plusieurs fenêtres de dates.
+
+Changer de catégorie.
+
+Passer de la vue Disponibilités à la vue Tarifs.
+
+Consulter une cellule.
+
+Revenir sans perdre les filtres.
+
+**Ces huit parcours doivent être réellement interactifs dans le prototype.**
+
+---
+
+# 22. PERFORMANCE ET ACCESSIBILITÉ
+
+La future application doit accepter des volumes importants.
+
+Les grilles ne doivent pas essayer d'afficher immédiatement toutes les données.
+
+Prévoir :
+
+- Fenêtres de dates.
+- Pagination.
+- Filtres.
+- Rendu borné.
+- Réutilisation des composants.
+- Indicateurs de chargement.
+- Gestion des états vides.
+
+### Accessibilité
+
+- Focus clavier visible.
+- Contrastes suffisants.
+- Utilisation de la couleur avec texte ou icône.
+- Raccourcis lorsque pertinents.
+- Navigation clavier.
+- Adaptation à différentes tailles d'écran.
+- Lisibilité à 125 % et 150 % de zoom.
+- Pas de dépendance aux effets de survol.
+
+L'application doit être optimisée pour un PC Windows avec écran de bureau, notamment autour de 1440 px de largeur.
+
+---
+
+# 23. DIFFÉRENCIATION DES MATURITÉS
+
+Dans la maquette, il faut distinguer clairement :
+
+### Existant ou partiellement développé
+
+- Collectes TOPSYS.
+- Collectes D-Edge.
+- Données de réservation.
+- Prix.
+- Stocks.
+- Historique.
+- Observation des statuts.
+- Calcul tarifaire en qualification.
+
+### Futur ou expérimental
+
+- Rapprochement opérationnel complet.
+- RMS décisionnel.
+- Stratégies automatiques.
+- Copilot.
+- Centre d'exécution.
+- Modifications D-Edge.
+- Synchronisation commerciale automatique.
+
+**Ne présente pas les futurs modules comme des fonctions déjà déployées dans nos applications.**
+
+Une fonctionnalité peut être interactive dans la démonstration tout en étant clairement indiquée comme future.
+
+---
+
+# 24. CE QUE TU NE DOIS PAS FAIRE
+
+Ne construis pas :
+
+- Un nouveau PMS complet.
+- Un nouveau Channel Manager.
+- Un moteur de réservation pour les clients.
+- Un CRM générique.
+- Un logiciel de facturation.
+- Un moteur de paiement.
+- Une plateforme d'e-mail marketing.
+- Une simple copie d'un logiciel hôtelier existant.
+
+Ne te disperse pas.
+
+La valeur de notre projet réside dans :
+
+**Comparer TOPSYS et D-Edge, comprendre la disponibilité, analyser les tarifs et aider le Revenue Manager à prendre les bonnes décisions.**
+
+---
+
+# 25. CRITÈRES D'ÉVALUATION DES CANDIDATS
+
+Ton travail sera évalué selon les critères suivants :
+
+| Critère | Poids |
+|---|---:|
+| Planning unifié et comparaison TOPSYS/D-Edge | 25 % |
+| Ergonomie générale et qualité graphique | 15 % |
+| Alertes RMS et justification métier | 15 % |
+| Centre tarifaire et plans ouverts/fermés | 15 % |
+| Copilot et navigation vers les sources | 10 % |
+| Simulation des stratégies et des actions | 10 % |
+| Performance, compatibilité technique et fiabilité des données | 10 % |
+
+Le candidat gagnant ne sera pas nécessairement celui qui présente le plus de modules.
+
+Ce sera celui qui permet de comprendre et de piloter le mieux les données.
+
+---
+
+# 26. LIVRABLE FINAL ATTENDU
+
+Je souhaite recevoir :
+
+**1. Un fichier `index.html` autonome et fonctionnel.**
+
+Il contient :
+
+- L'interface complète.
+- Tous les styles.
+- Le JavaScript.
+- Les données fictives.
+- La navigation.
+- Les graphiques.
+- Les tableaux.
+- Les filtres.
+- Les simulations.
+- Le Copilot fictif.
+
+**2. Une courte documentation**
+
+Elle explique :
+
+- Le concept UX retenu.
+- L'organisation des modules.
+- Les composants principaux.
+- Les interactions réalisées.
+- Les limites du prototype.
+- Les éléments facilement réutilisables dans notre stack Python/SQLite/JavaScript.
+
+**3. Une indication claire des fonctions simulées**
+
+L'application doit afficher :
+
+« Prototype VIGIE RMS — données fictives — aucune connexion ni écriture réelle ».
+
+---
+
+# 27. CONSIGNE FINALE
+
+Je ne souhaite pas une présentation PowerPoint, un simple wireframe ou une description conceptuelle.
+
+**Je veux une application HTML de démonstration que je peux ouvrir dans Chrome, explorer, utiliser et comparer avec les propositions d'autres agents.**
+
+Ne demande aucune clarification préalable.
+
+Prends des décisions de design intelligentes et assume-les.
+
+Fais preuve de créativité, mais reste fidèle à notre activité réelle.
+
+Nous avons passé beaucoup de temps à développer les moteurs de collecte TOPSYS et D-Edge.
+
+**Le défi consiste maintenant à transformer ces deux sources d'informations en un poste de pilotage exceptionnel, capable de devenir progressivement un véritable RMS hôtelier avec Copilot et automatisation contrôlée.**
+
+Conçois la meilleure interface possible pour cet objectif.

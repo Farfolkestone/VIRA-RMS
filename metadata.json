@@ -1,0 +1,6 @@
+{
+  "name": "VIGIE RMS — Unified Hotel Intelligence",
+  "description": "Centre de pilotage hôtelier unifié combinant TOPSYS (VIGIE PLUS), D-Edge (VARA PLUS), moteur RMS décisionnel et Copilot d'aide à la décision.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
